@@ -1,0 +1,96 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# Jupyter Notebook
+# =========================
+.ipynb_checkpoints
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+
+# =========================
+# Logs & temp files
+# =========================
+*.log
+logs/
+tmp/
+temp/
+
+# =========================
+# Data files (IMPORTANT)
+# =========================
+data/
+*.csv
+*.xlsx
+*.json
+
+# (Nếu mày muốn giữ sample data thì comment dòng trên)
+
+# =========================
+# Model files
+# =========================
+models/
+*.pkl
+*.joblib
+*.h5
+
+# =========================
+# Streamlit
+# =========================
+.streamlit/secrets.toml
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Build / distribution
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =========================
+# Cache
+# =========================
+.cache/
+.pytest_cache/
+.mypy_cache/
+
+# =========================
+# Docker (optional)
+# =========================
+*.pid
+*.seed
+
+# =========================
+# Misc
+# =========================
+coverage/
+htmlcov/
