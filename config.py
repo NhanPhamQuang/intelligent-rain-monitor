@@ -3,11 +3,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MONGO_URI = os.getenv(
-    "MONGO_URI",
-    "mongodb+srv://gialoc:gialoc@cluster0.bbizuor.mongodb.net/?appName=Cluster0",
-)
-MONGO_DB = os.getenv("MONGO_DB", "weather_monitor")
+MONGO_URI = os.getenv("MONGO_URI")
+MONGO_DB  = os.getenv("MONGO_DB", "weather_monitor")
 
 APP_NAME = "Intelligent Rain Monitor"
 VERSION = "2.0.0"

@@ -74,107 +74,124 @@ _CSS = """
 [data-testid="stHeader"]    { display: none !important; }
 #MainMenu                   { display: none !important; }
 footer                      { display: none !important; }
-.block-container { padding: 0 !important; max-width: 100% !important; }
+
+.block-container {
+    padding: 2rem 1rem 1rem 1rem !important;
+    max-width: 860px !important;
+    margin: 0 auto !important;
+}
 .stApp { background: #c3d8e5 !important; }
 
-.auth-card {
-    display: flex;
-    width: 820px;
-    max-width: 96vw;
-    min-height: 580px;
+div[data-testid="stHorizontalBlock"] {
+    background: white;
     border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 24px 64px rgba(0,0,0,0.18);
-    margin: 5vh auto 0 auto;
+    gap: 0 !important;
+    align-items: stretch !important;
 }
-.auth-left  { flex: 1; min-height: 580px; }
-.auth-right {
-    flex: 1;
+
+div[data-testid="stHorizontalBlock"]
+  > div[data-testid="stColumn"]:first-child {
+    padding: 0 !important;
+    min-height: 560px;
+}
+div[data-testid="stHorizontalBlock"]
+  > div[data-testid="stColumn"]:first-child > div {
+    padding: 0 !important;
+    height: 100%;
+}
+
+div[data-testid="stHorizontalBlock"]
+  > div[data-testid="stColumn"]:last-child {
     background: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 44px 44px;
+    padding: 40px 44px 32px 44px !important;
 }
-.auth-right .stTextInput input,
-.auth-right .stSelectbox > div > div {
+
+div[data-testid="stHorizontalBlock"] .stTextInput input,
+div[data-testid="stHorizontalBlock"] .stSelectbox > div > div {
     border: 1px solid #d1d5db !important;
     border-radius: 8px !important;
     font-size: 14px !important;
     color: #1f2937 !important;
     background: #f9fafb !important;
 }
-.auth-right .stTextInput input:focus {
+div[data-testid="stHorizontalBlock"] .stTextInput input:focus {
     border-color: #6bacd4 !important;
     box-shadow: 0 0 0 3px rgba(107,172,212,0.2) !important;
 }
-.auth-right .stTextInput label,
-.auth-right .stSelectbox label { color: #374151 !important; font-size: 13px !important; }
-.auth-right .stFormSubmitButton button {
-    background: #6bacd4 !important;
-    border: none !important;
-    border-radius: 8px !important;
-    color: white !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    padding: 12px !important;
-    margin-top: 8px !important;
+div[data-testid="stHorizontalBlock"] .stTextInput label,
+div[data-testid="stHorizontalBlock"] .stSelectbox label {
+    color: #374151 !important;
+    font-size: 13px !important;
 }
-.auth-right .stFormSubmitButton button:hover { background: #5499c2 !important; }
+div[data-testid="stHorizontalBlock"] .stButton button {
+    border-radius: 8px !important;
+    font-size: 14px !important;
+}
+div[data-testid="stHorizontalBlock"] p,
+div[data-testid="stHorizontalBlock"] label {
+    color: #374151 !important;
+}
 </style>
 """
 
-# Role options shown to users (no admin self-registration)
 _ROLE_OPTIONS = {v: k for k, v in ROLE_LABELS.items()}
 
 
 def show_register():
     st.markdown(_CSS, unsafe_allow_html=True)
 
-    st.markdown(f"""
-    <div class="auth-card">
-        <div class="auth-left">{_SVG}</div>
-        <div class="auth-right">
-            <h2 style="text-align:center;letter-spacing:4px;color:#1f2937;
-                       font-size:22px;font-weight:700;margin-bottom:20px;">SIGN UP</h2>
-    """, unsafe_allow_html=True)
+    col_left, col_right = st.columns(2, gap="small")
 
-    with st.form("register_form", clear_on_submit=False):
-        username = st.text_input("Username",             placeholder="Choose a username")
-        email    = st.text_input("Email",                placeholder="Your email address")
-        password = st.text_input("Password",             placeholder="Create a password", type="password")
-        confirm  = st.text_input("Confirm Password",     placeholder="Repeat your password", type="password")
+    with col_left:
+        st.markdown(
+            f'<div style="height:560px;overflow:hidden;line-height:0;">{_SVG}</div>',
+            unsafe_allow_html=True,
+        )
+
+    with col_right:
+        st.markdown(
+            "<h2 style='text-align:center;letter-spacing:4px;color:#1f2937;"
+            "font-size:22px;font-weight:700;margin-bottom:16px;'>SIGN UP</h2>",
+            unsafe_allow_html=True,
+        )
+
+        username   = st.text_input("Username",         placeholder="Choose a username",   key="reg_user")
+        email      = st.text_input("Email",            placeholder="Your email address",   key="reg_email")
+        password   = st.text_input("Password",         placeholder="Create a password",    key="reg_pass",  type="password")
+        confirm    = st.text_input("Confirm Password", placeholder="Repeat your password", key="reg_confirm", type="password")
         role_label = st.selectbox(
             "Role",
             list(_ROLE_OPTIONS.keys()),
-            help="Data Scientist: analytics pages  |  Farmer: farm assistant  |  Weather Agency: monitoring"
+            key="reg_role",
+            help="Data Scientist: analytics pages  |  Farmer: farm assistant  |  Weather Agency: monitoring",
         )
-        submitted = st.form_submit_button("Create Account", use_container_width=True)
 
-    if submitted:
-        if not all([username, email, password, confirm]):
-            st.warning("Please fill in all fields.")
-        elif password != confirm:
-            st.error("Passwords do not match.")
-        elif len(password) < 4:
-            st.error("Password must be at least 4 characters.")
-        else:
-            role = _ROLE_OPTIONS[role_label]
-            ok, msg = register_user(username.strip(), email.strip(), password, role)
-            if ok:
-                st.success(f"{msg} You can now log in.")
-                st.session_state.auth_page = "login"
-                st.rerun()
+        st.markdown("<div style='height:6px'></div>", unsafe_allow_html=True)
+
+        if st.button("Create Account", use_container_width=True, key="reg_btn"):
+            if not all([username, email, password, confirm]):
+                st.warning("Please fill in all fields.")
+            elif password != confirm:
+                st.error("Passwords do not match.")
+            elif len(password) < 4:
+                st.error("Password must be at least 4 characters.")
             else:
-                st.error(msg)
+                role = _ROLE_OPTIONS[role_label]
+                ok, msg = register_user(username.strip(), email.strip(), password, role)
+                if ok:
+                    st.success(f"{msg} You can now log in.")
+                    st.session_state.auth_page = "login"
+                    st.rerun()
+                else:
+                    st.error(msg)
 
-    st.markdown(
-        "<p style='text-align:center;color:#9ca3af;font-size:13px;margin-top:16px;'>"
-        "Already have an account?</p>",
-        unsafe_allow_html=True,
-    )
-    if st.button("Login", use_container_width=True, key="goto_login"):
-        st.session_state.auth_page = "login"
-        st.rerun()
-
-    st.markdown("</div></div>", unsafe_allow_html=True)
+        st.markdown(
+            "<p style='text-align:center;color:#9ca3af;font-size:13px;margin-top:12px;'>"
+            "Already have an account?</p>",
+            unsafe_allow_html=True,
+        )
+        if st.button("Login", use_container_width=True, key="goto_login"):
+            st.session_state.auth_page = "login"
+            st.rerun()

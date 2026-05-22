@@ -1,7 +1,6 @@
 import streamlit as st
 from services.auth_service import login_user
 
-# ── SVG illustration (surfer on waves) ───────────────────────────
 _SVG = """
 <svg viewBox="0 0 420 560" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%;">
   <defs>
@@ -19,30 +18,22 @@ _SVG = """
       <stop offset="100%" stop-color="#123d5a"/>
     </linearGradient>
   </defs>
-
-  <!-- sky -->
   <rect width="420" height="560" fill="url(#lsky)"/>
-
-  <!-- storm clouds -->
   <g opacity="0.28">
     <ellipse cx="205" cy="52" rx="75" ry="30" fill="#4a6a7a"/>
     <ellipse cx="250" cy="40" rx="88" ry="34" fill="#5a7a8a"/>
     <ellipse cx="290" cy="52" rx="62" ry="26" fill="#4a6a7a"/>
   </g>
-  <!-- white clouds left -->
   <g opacity="0.55">
     <ellipse cx="70"  cy="82"  rx="55" ry="26" fill="white"/>
     <ellipse cx="102" cy="68"  rx="68" ry="31" fill="white"/>
     <ellipse cx="138" cy="78"  rx="46" ry="22" fill="white"/>
   </g>
-  <!-- white clouds right -->
   <g opacity="0.40">
     <ellipse cx="305" cy="100" rx="46" ry="22" fill="white"/>
     <ellipse cx="340" cy="88"  rx="58" ry="26" fill="white"/>
     <ellipse cx="372" cy="98"  rx="38" ry="18" fill="white"/>
   </g>
-
-  <!-- rain drops -->
   <g stroke="rgba(255,255,255,0.42)" stroke-width="1.8" stroke-linecap="round">
     <line x1="38"  y1="148" x2="30"  y2="166"/>
     <line x1="66"  y1="170" x2="58"  y2="188"/>
@@ -57,62 +48,31 @@ _SVG = """
     <line x1="368" y1="152" x2="360" y2="170"/>
     <line x1="392" y1="178" x2="384" y2="196"/>
   </g>
-
-  <!-- back wave -->
-  <path d="M0,308 C55,280 115,320 175,294 C235,268 295,308 355,282 C380,270 405,278 420,268 L420,560 L0,560 Z"
-        fill="url(#lsea)"/>
-  <!-- mid wave -->
-  <path d="M0,348 C72,318 155,360 225,330 C285,306 345,342 420,318 L420,560 L0,560 Z"
-        fill="url(#lwave2)" opacity="0.9"/>
-  <!-- foam lines on mid wave -->
-  <path d="M0,348 C28,338 58,350 88,340 C108,333 128,345 148,337"
-        stroke="rgba(255,255,255,0.55)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-  <path d="M224,330 C244,320 264,333 284,325 C304,317 320,328 338,320"
-        stroke="rgba(255,255,255,0.45)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <!-- front wave -->
-  <path d="M0,392 C82,364 172,398 252,372 C314,354 378,382 420,365 L420,560 L0,560 Z"
-        fill="#165070" opacity="0.88"/>
-
-  <!-- surfboard -->
+  <path d="M0,308 C55,280 115,320 175,294 C235,268 295,308 355,282 C380,270 405,278 420,268 L420,560 L0,560 Z" fill="url(#lsea)"/>
+  <path d="M0,348 C72,318 155,360 225,330 C285,306 345,342 420,318 L420,560 L0,560 Z" fill="url(#lwave2)" opacity="0.9"/>
+  <path d="M0,348 C28,338 58,350 88,340 C108,333 128,345 148,337" stroke="rgba(255,255,255,0.55)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M224,330 C244,320 264,333 284,325 C304,317 320,328 338,320" stroke="rgba(255,255,255,0.45)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M0,392 C82,364 172,398 252,372 C314,354 378,382 420,365 L420,560 L0,560 Z" fill="#165070" opacity="0.88"/>
   <g transform="translate(188,304) rotate(-12)">
     <ellipse cx="0" cy="0" rx="66" ry="13" fill="#c05810"/>
     <ellipse cx="0" cy="-2" rx="60" ry="9"  fill="#e07825" opacity="0.65"/>
     <ellipse cx="0" cy="0"  rx="26" ry="6"  fill="#f09030" opacity="0.45"/>
   </g>
-
-  <!-- surfer -->
   <g transform="translate(198,270)">
-    <!-- head -->
     <circle cx="0" cy="-40" r="17" fill="#c87941"/>
-    <!-- dark hair -->
     <path d="M-10,-52 Q0,-60 10,-52 Q8,-40 0,-37 Q-8,-40 -10,-52" fill="#2a1505"/>
-    <!-- body -->
     <path d="M-13,-24 Q0,-10 13,-24 L17,10 Q0,17 -17,10 Z" fill="#d4a020"/>
-    <!-- left arm raised -->
-    <path d="M-13,-14 Q-30,-32 -40,-50"
-          stroke="#c87941" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <!-- right arm raised -->
-    <path d="M13,-14 Q34,-30 46,-46"
-          stroke="#c87941" stroke-width="9" stroke-linecap="round" fill="none"/>
-    <!-- left leg -->
-    <path d="M-6,10 L-13,30"
-          stroke="#d4a020" stroke-width="8" stroke-linecap="round"/>
-    <!-- right leg bent -->
-    <path d="M6,10 L15,28"
-          stroke="#d4a020" stroke-width="8" stroke-linecap="round"/>
+    <path d="M-13,-14 Q-30,-32 -40,-50" stroke="#c87941" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M13,-14 Q34,-30 46,-46"   stroke="#c87941" stroke-width="9" stroke-linecap="round" fill="none"/>
+    <path d="M-6,10 L-13,30" stroke="#d4a020" stroke-width="8" stroke-linecap="round"/>
+    <path d="M6,10  L15,28"  stroke="#d4a020" stroke-width="8" stroke-linecap="round"/>
   </g>
-
-  <!-- spray splashes -->
   <path d="M128,318 Q142,303 152,316" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" fill="none"/>
   <path d="M258,308 Q268,293 278,306" stroke="rgba(255,255,255,0.45)" stroke-width="2"   fill="none"/>
-
-  <!-- branding -->
   <text x="210" y="488" text-anchor="middle" font-size="17" font-weight="700"
         fill="white" font-family="Arial,sans-serif">Intelligent Rain Monitor</text>
   <text x="210" y="510" text-anchor="middle" font-size="11"
         fill="rgba(255,255,255,0.72)" font-family="Arial,sans-serif">AI-powered weather prediction</text>
-
-  <!-- bottom shimmer -->
   <path d="M0,530 C70,520 140,536 210,524 C280,512 350,530 420,518 L420,560 L0,560 Z"
         fill="rgba(255,255,255,0.07)"/>
 </svg>
@@ -124,34 +84,45 @@ _CSS = """
 [data-testid="stHeader"]    { display: none !important; }
 #MainMenu                   { display: none !important; }
 footer                      { display: none !important; }
+
 .block-container {
-    padding: 0 !important;
-    max-width: 100% !important;
+    padding: 2rem 1rem 1rem 1rem !important;
+    max-width: 860px !important;
+    margin: 0 auto !important;
 }
 .stApp { background: #c3d8e5 !important; }
 
-/* ── card shell ── */
-.auth-card {
-    display: flex;
-    width: 820px;
-    max-width: 96vw;
-    min-height: 540px;
+/* ── outer card ── */
+div[data-testid="stHorizontalBlock"].auth-cols {
+    background: white;
     border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 24px 64px rgba(0,0,0,0.18);
-    margin: 8vh auto 0 auto;
+    gap: 0 !important;
+    align-items: stretch !important;
 }
-.auth-left  { flex: 1; min-height: 540px; }
-.auth-right {
-    flex: 1;
+
+/* illustration column */
+div[data-testid="stHorizontalBlock"].auth-cols
+  > div[data-testid="stColumn"]:first-child {
+    padding: 0 !important;
+    min-height: 520px;
+}
+div[data-testid="stHorizontalBlock"].auth-cols
+  > div[data-testid="stColumn"]:first-child > div {
+    padding: 0 !important;
+    height: 100%;
+}
+
+/* form column */
+div[data-testid="stHorizontalBlock"].auth-cols
+  > div[data-testid="stColumn"]:last-child {
     background: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 52px 44px;
+    padding: 48px 44px 36px 44px !important;
 }
-/* ── form fields ── */
-.auth-right .stTextInput input {
+
+/* inputs */
+div[data-testid="stHorizontalBlock"].auth-cols .stTextInput input {
     border: 1px solid #d1d5db !important;
     border-radius: 8px !important;
     padding: 10px 14px !important;
@@ -159,13 +130,18 @@ footer                      { display: none !important; }
     color: #1f2937 !important;
     background: #f9fafb !important;
 }
-.auth-right .stTextInput input:focus {
+div[data-testid="stHorizontalBlock"].auth-cols .stTextInput input:focus {
     border-color: #6bacd4 !important;
     box-shadow: 0 0 0 3px rgba(107,172,212,0.2) !important;
 }
-.auth-right .stTextInput label { color: #374151 !important; font-size: 13px !important; }
-/* ── primary button ── */
-.auth-right .stFormSubmitButton button {
+div[data-testid="stHorizontalBlock"].auth-cols .stTextInput label {
+    color: #374151 !important;
+    font-size: 13px !important;
+}
+
+/* login button */
+div[data-testid="stHorizontalBlock"].auth-cols
+  > div[data-testid="stColumn"]:last-child > div > div[data-testid="stButton"]:nth-of-type(1) button {
     background: #6bacd4 !important;
     border: none !important;
     border-radius: 8px !important;
@@ -173,11 +149,34 @@ footer                      { display: none !important; }
     font-size: 14px !important;
     font-weight: 600 !important;
     padding: 12px !important;
-    margin-top: 8px !important;
     letter-spacing: 0.5px;
+    width: 100%;
+    margin-top: 4px;
 }
-.auth-right .stFormSubmitButton button:hover {
+div[data-testid="stHorizontalBlock"].auth-cols
+  > div[data-testid="stColumn"]:last-child > div > div[data-testid="stButton"]:nth-of-type(1) button:hover {
     background: #5499c2 !important;
+}
+
+/* sign up button */
+div[data-testid="stHorizontalBlock"].auth-cols .stButton button {
+    border-radius: 8px !important;
+    font-size: 13px !important;
+}
+
+/* checkbox */
+div[data-testid="stHorizontalBlock"].auth-cols .stCheckbox label {
+    color: #6b7280 !important;
+    font-size: 13px !important;
+}
+
+/* nested columns (remember-me row) — reset card styles */
+div[data-testid="stHorizontalBlock"].auth-cols
+  div[data-testid="stHorizontalBlock"] {
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
 }
 </style>
 """
@@ -186,18 +185,28 @@ footer                      { display: none !important; }
 def show_login():
     st.markdown(_CSS, unsafe_allow_html=True)
 
-    st.markdown(f"""
-    <div class="auth-card">
-        <div class="auth-left">{_SVG}</div>
-        <div class="auth-right">
-            <h2 style="text-align:center;letter-spacing:4px;color:#1f2937;
-                       font-size:22px;font-weight:700;margin-bottom:28px;">LOGIN</h2>
-    """, unsafe_allow_html=True)
+    # Inject a class onto the next stHorizontalBlock via a preceding marker div
+    st.markdown(
+        '<div style="display:none" class="auth-marker"></div>', unsafe_allow_html=True
+    )
 
-    # ── Streamlit form (rendered inside the right panel via CSS) ──
-    with st.form("login_form", clear_on_submit=False):
-        username = st.text_input("Email", placeholder="Username or email")
-        password = st.text_input("Password", type="password", placeholder="Password")
+    col_left, col_right = st.columns(2, gap="small")
+
+    with col_left:
+        st.markdown(
+            f'<div style="height:520px;overflow:hidden;line-height:0;">{_SVG}</div>',
+            unsafe_allow_html=True,
+        )
+
+    with col_right:
+        st.markdown(
+            "<h2 style='text-align:center;letter-spacing:4px;color:#1f2937;"
+            "font-size:22px;font-weight:700;margin-bottom:24px;'>LOGIN</h2>",
+            unsafe_allow_html=True,
+        )
+
+        username = st.text_input("Email", placeholder="Username or email", key="login_user")
+        password = st.text_input("Password", type="password", placeholder="Password", key="login_pass")
 
         c1, c2 = st.columns([1, 1])
         with c1:
@@ -210,27 +219,25 @@ def show_login():
                 unsafe_allow_html=True,
             )
 
-        submitted = st.form_submit_button("Login", use_container_width=True)
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
-    if submitted:
-        if not username or not password:
-            st.warning("Please enter your username and password.")
-        else:
-            user = login_user(username.strip(), password)
-            if user:
-                st.session_state.authenticated = True
-                st.session_state.user = user
-                st.rerun()
+        if st.button("Login", use_container_width=True, key="login_btn"):
+            if not username or not password:
+                st.warning("Please enter your username and password.")
             else:
-                st.error("Invalid username or password.")
+                user = login_user(username.strip(), password)
+                if user:
+                    st.session_state.authenticated = True
+                    st.session_state.user = user
+                    st.rerun()
+                else:
+                    st.error("Invalid username or password.")
 
-    st.markdown(
-        "<p style='text-align:center;color:#9ca3af;font-size:13px;margin-top:16px;'>"
-        "Don't have an account?</p>",
-        unsafe_allow_html=True,
-    )
-    if st.button("Sign Up", use_container_width=True, key="goto_register"):
-        st.session_state.auth_page = "register"
-        st.rerun()
-
-    st.markdown("</div></div>", unsafe_allow_html=True)
+        st.markdown(
+            "<p style='text-align:center;color:#9ca3af;font-size:13px;margin-top:12px;'>"
+            "Don't have an account?</p>",
+            unsafe_allow_html=True,
+        )
+        if st.button("Sign Up", use_container_width=True, key="goto_register"):
+            st.session_state.auth_page = "register"
+            st.rerun()
