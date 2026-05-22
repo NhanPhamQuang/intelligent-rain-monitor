@@ -41,13 +41,6 @@ data/
 
 # (Nếu mày muốn giữ sample data thì comment dòng trên)
 
-# =========================
-# Model files
-# =========================
-models/
-*.pkl
-*.joblib
-*.h5
 
 # =========================
 # Streamlit
