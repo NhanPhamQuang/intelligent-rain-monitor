@@ -35,28 +35,34 @@ def _ensure_metrics():
         db["model_metrics"].insert_one(record)
 
 
-def _load_metrics() -> dict:
+def _load_all_metrics() -> dict:
+    """Return {model_name: doc} for every entry in the collection."""
     db = get_db()
+    result = {}
     if db is not None:
-        doc = db["model_metrics"].find_one(sort=[("last_trained", -1)])
-        if doc:
+        for doc in db["model_metrics"].find():
             doc.pop("_id", None)
-            return doc
-    return dict(_DEFAULT_METRICS)
+            result[doc.get("model_name", "Unknown")] = doc
+    if not result:
+        result[_DEFAULT_METRICS["model_name"]] = dict(_DEFAULT_METRICS)
+    return result
 
 
 def show_model_performance():
     st.title("Model Performance Dashboard")
     _ensure_metrics()
 
-    m = _load_metrics()
-    last_trained = m.get("last_trained")
-    trained_str = last_trained.strftime("%Y-%m-%d") if isinstance(last_trained, datetime) else "N/A"
+    all_metrics = _load_all_metrics()
+    model_names = list(all_metrics.keys())
 
     # ── header ───────────────────────────────────────────────────
     hc1, hc2 = st.columns([2, 1])
     with hc1:
-        st.selectbox("Model", [m.get("model_name", "LightGBM"), "Random Forest", "XGBoost"])
+        selected = st.selectbox("Model", model_names)
+    m = all_metrics[selected]
+
+    last_trained = m.get("last_trained")
+    trained_str = last_trained.strftime("%Y-%m-%d") if isinstance(last_trained, datetime) else "N/A"
     with hc2:
         st.info(f"**Status:** Production  \n**Last Trained:** {trained_str}  \n**Dataset:** {m.get('dataset_size', 0):,} rows")
 
