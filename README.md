@@ -146,4 +146,4 @@ On first launch, the sidebar will show a **"Seed Database from CSV"** button if 
 
 ## Author
 
-Built by Lê Phước Gia Lộc — practical full-stack ML system, not just a notebook.
+Built by Lê Phước Gia Lộc and Phạm Quang Nhân — practical full-stack ML system, not just a notebook.
